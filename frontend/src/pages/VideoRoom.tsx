@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import VideoGrid from "@/components/VideoCall/VideoGrid";
 import VideoControls from "@/components/VideoCall/VideoControls";
 import Chat from "@/components/Chat/Chat";
 import Whiteboard from "@/components/Whiteboard/Whiteboard";
+import type { Participant } from "@/types/participant";
 import ParticipantsList from "@/components/Participants/ParticipantsList";
-import { useParams } from "react-router-dom";
+
 
 const VideoRoom = () => {
   const { roomId } = useParams();
@@ -12,64 +14,63 @@ const VideoRoom = () => {
   const [showWhiteboard, setShowWhiteboard] = useState(false);
   const [showParticipants, setShowParticipants] = useState(false);
 
-  // Mock data - in real app this would come from WebRTC/Socket.io
-  const participants = [
-    { 
-      id: "1", 
-      name: "You", 
-      isHost: true, 
-      videoEnabled: true, 
-      audioEnabled: true, 
+  // Mock participants - replace with real-time WebRTC/Socket.io data
+  const participants: Participant[] = [
+    {
+      id: "1",
+      name: "You",
+      isHost: true,
+      videoEnabled: true,
+      audioEnabled: true,
       isScreenSharing: false,
-      status: "online" as const,
-      joinedAt: new Date(Date.now() - 600000) // 10 minutes ago
+      status: "online",
+      joinedAt: new Date(Date.now() - 600_000), // 10 mins ago
     },
-    { 
-      id: "2", 
-      name: "Alice Cooper", 
-      isHost: false, 
-      videoEnabled: true, 
-      audioEnabled: true, 
+    {
+      id: "2",
+      name: "Alice Cooper",
+      isHost: false,
+      videoEnabled: true,
+      audioEnabled: true,
       isScreenSharing: false,
-      status: "online" as const,
-      joinedAt: new Date(Date.now() - 300000) // 5 minutes ago
+      status: "online",
+      joinedAt: new Date(Date.now() - 300_000),
     },
-    { 
-      id: "3", 
-      name: "Bob Smith", 
-      isHost: false, 
-      videoEnabled: false, 
-      audioEnabled: true, 
+    {
+      id: "3",
+      name: "Bob Smith",
+      isHost: false,
+      videoEnabled: false,
+      audioEnabled: true,
       isScreenSharing: false,
-      status: "away" as const,
-      joinedAt: new Date(Date.now() - 180000) // 3 minutes ago
+      status: "away",
+      joinedAt: new Date(Date.now() - 180_000),
     },
-    { 
-      id: "4", 
-      name: "Carol Davis", 
-      isHost: false, 
-      videoEnabled: true, 
-      audioEnabled: false, 
+    {
+      id: "4",
+      name: "Carol Davis",
+      isHost: false,
+      videoEnabled: true,
+      audioEnabled: false,
       isScreenSharing: false,
-      status: "online" as const,
-      joinedAt: new Date(Date.now() - 120000) // 2 minutes ago
-    }
+      status: "online",
+      joinedAt: new Date(Date.now() - 120_000),
+    },
   ];
 
+  // Leave the call - clean up in real app
   const handleLeaveCall = () => {
-    // In real app, clean up WebRTC connections and leave room
-    window.location.href = '/';
+    // TODO: cleanup WebRTC/Socket connections
+    window.location.href = "/";
   };
 
   return (
     <div className="h-screen bg-video-bg flex flex-col overflow-hidden">
-      {/* Main content area */}
+      {/* Main video & side panels */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Video grid - main area */}
         <div className="flex-1 relative">
           <VideoGrid participants={participants} currentUserId="1" />
-          
-          {/* Overlay panels */}
+
           {showWhiteboard && (
             <div className="absolute inset-4 bg-card border border-border rounded-lg z-20">
               <Whiteboard onClose={() => setShowWhiteboard(false)} />
@@ -77,7 +78,6 @@ const VideoRoom = () => {
           )}
         </div>
 
-        {/* Side panels */}
         {showChat && (
           <div className="w-80 border-l border-border bg-chat-bg">
             <Chat onClose={() => setShowChat(false)} />
@@ -86,7 +86,7 @@ const VideoRoom = () => {
 
         {showParticipants && (
           <div className="w-64 border-l border-border bg-card">
-            <ParticipantsList 
+            <ParticipantsList
               participants={participants}
               onClose={() => setShowParticipants(false)}
             />

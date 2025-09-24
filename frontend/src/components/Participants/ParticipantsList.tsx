@@ -19,17 +19,8 @@ import {
   Settings
 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import type { Participant } from "@/types/participant";
 
-interface Participant {
-  id: string;
-  name: string;
-  isHost: boolean;
-  videoEnabled: boolean;
-  audioEnabled: boolean;
-  isScreenSharing: boolean;
-  status: "online" | "away" | "busy";
-  joinedAt: Date;
-}
 
 interface ParticipantsListProps {
   participants: Participant[];

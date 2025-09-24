@@ -10,6 +10,16 @@ const Index = () => {
   const [roomCode, setRoomCode] = useState("");
   const [showJoinRoom, setShowJoinRoom] = useState(false);
 
+  const isLoggedIn = !!localStorage.getItem("token");
+
+  const handleRedirect = (path: string) => {
+    if (isLoggedIn) {
+      window.location.href = path;
+    } else {
+      window.location.href = `/login?redirect=${encodeURIComponent(path)}`;
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -37,7 +47,7 @@ const Index = () => {
               <Button 
                 size="lg" 
                 className="gradient-primary text-white border-0 hover:scale-105 transition-all duration-300 shadow-lg"
-                onClick={() => window.location.href = '/room/new'}
+                onClick={() => handleRedirect("/room/new")}
               >
                 <Video className="w-5 h-5 mr-2" />
                 Start New Room
@@ -69,7 +79,7 @@ const Index = () => {
                   <Button 
                     className="w-full gradient-primary" 
                     disabled={!roomCode}
-                    onClick={() => window.location.href = `/room/${roomCode}`}
+                    onClick={() => handleRedirect(`/room/${roomCode}`)}
                   >
                     Join Room
                   </Button>
@@ -89,46 +99,14 @@ const Index = () => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {[
-            {
-              icon: Video,
-              title: "HD Video Calls",
-              description: "Crystal clear video with up to 6 participants in mesh network"
-            },
-            {
-              icon: MessageSquare,
-              title: "Real-time Chat",
-              description: "Instant messaging with file sharing and emoji reactions"
-            },
-            {
-              icon: PenTool,
-              title: "Collaborative Whiteboard",
-              description: "Draw, brainstorm, and visualize ideas together in real-time"
-            },
-            {
-              icon: Share2,
-              title: "Screen Sharing",
-              description: "Share your screen for presentations and demos"
-            },
-            {
-              icon: Shield,
-              title: "Secure & Private",
-              description: "End-to-end encryption and secure authentication"
-            },
-            {
-              icon: Users,
-              title: "Team Rooms",
-              description: "Create persistent rooms for your team with custom settings"
-            },
-            {
-              icon: Globe,
-              title: "Cross-platform",
-              description: "Works seamlessly across desktop, tablet, and mobile"
-            },
-            {
-              icon: Zap,
-              title: "Low Latency",
-              description: "Optimized WebRTC for minimal delay and smooth experience"
-            }
+            { icon: Video, title: "HD Video Calls", description: "Crystal clear video with up to 6 participants in mesh network" },
+            { icon: MessageSquare, title: "Real-time Chat", description: "Instant messaging with file sharing and emoji reactions" },
+            { icon: PenTool, title: "Collaborative Whiteboard", description: "Draw, brainstorm, and visualize ideas together in real-time" },
+            { icon: Share2, title: "Screen Sharing", description: "Share your screen for presentations and demos" },
+            { icon: Shield, title: "Secure & Private", description: "End-to-end encryption and secure authentication" },
+            { icon: Users, title: "Team Rooms", description: "Create persistent rooms for your team with custom settings" },
+            { icon: Globe, title: "Cross-platform", description: "Works seamlessly across desktop, tablet, and mobile" },
+            { icon: Zap, title: "Low Latency", description: "Optimized WebRTC for minimal delay and smooth experience" }
           ].map((feature, index) => (
             <Card key={index} className="glass hover:bg-card/80 transition-all duration-300 hover:scale-105">
               <CardContent className="p-6 text-center">
@@ -149,7 +127,7 @@ const Index = () => {
           <Button 
             size="lg" 
             className="gradient-primary text-white border-0 hover:scale-105 transition-all duration-300"
-            onClick={() => window.location.href = '/auth/signup'}
+            onClick={() => handleRedirect("/signup")}
           >
             Get Started Free
           </Button>
@@ -160,3 +138,4 @@ const Index = () => {
 };
 
 export default Index;
+
